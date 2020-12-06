@@ -1,0 +1,6 @@
+set xlabel "data count"
+set ylabel "time of appending"
+set terminal png
+set output "plots/plot.png"
+plot "time_log.txt" with lines
+pause -1

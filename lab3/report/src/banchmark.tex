@@ -1,0 +1,148 @@
+
+\section{Тест производительности}
+
+Тест производительности представляет из себя следующее: в каждом запуске используется 4 файла с одинаковым количеством команд (вставка, удаление, поиск, сохранение и загрузка). 
+Я провожу 4 запуска с файлами из 1000, 2000, 4000, 8000 команд. Время исполнения программы подсчитывается с помощью библиотеки std::chrono. 
+  
+\begin{alltt}
+igor@igor-Aspire-A315-53G:~/Рабочий стол/c++/DA/lab2$ make run
+python tests_creator.py
+rm -rf time_log.txt
+./main.out < tests/01.t > tests/01ans.txt
+./main.out < tests/02.t > tests/02ans.txt
+./main.out < tests/03.t > tests/03ans.txt
+./main.out < tests/04.t > tests/04ans.txt
+diff tests/01ans.txt tests/01.txt
+diff tests/02ans.txt tests/02.txt
+diff tests/03ans.txt tests/03.txt
+diff tests/04ans.txt tests/04.txt
+cat time_log.txt
+Время выполнения: 0.0361716
+Время выполнения: 0.0391028
+Время выполнения: 0.0454176
+Время выполнения: 0.0468878
+igor@igor-Aspire-A315-53G:~/Рабочий стол/c++/DA/lab2$ make run
+python tests_creator.py
+rm -rf time_log.txt
+./main.out < tests/01.t > tests/01ans.txt
+./main.out < tests/02.t > tests/02ans.txt
+./main.out < tests/03.t > tests/03ans.txt
+./main.out < tests/04.t > tests/04ans.txt
+diff tests/01ans.txt tests/01.txt
+diff tests/02ans.txt tests/02.txt
+diff tests/03ans.txt tests/03.txt
+diff tests/04ans.txt tests/04.txt
+cat time_log.txt
+Время выполнения: 0.16464
+Время выполнения: 0.215931
+Время выполнения: 0.210479
+Время выполнения: 0.292415
+igor@igor-Aspire-A315-53G:~/Рабочий стол/c++/DA/lab2$ make run
+python tests_creator.py
+rm -rf time_log.txt
+./main.out < tests/01.t > tests/01ans.txt
+./main.out < tests/02.t > tests/02ans.txt
+./main.out < tests/03.t > tests/03ans.txt
+./main.out < tests/04.t > tests/04ans.txt
+diff tests/01ans.txt tests/01.txt
+diff tests/02ans.txt tests/02.txt
+diff tests/03ans.txt tests/03.txt
+diff tests/04ans.txt tests/04.txt
+cat time_log.txt
+Время выполнения: 0.822479
+Время выполнения: 0.870851
+Время выполнения: 1.05411
+Время выполнения: 1.87136
+igor@igor-Aspire-A315-53G:~/Рабочий стол/c++/DA/lab2$ make run
+python tests_creator.py
+rm -rf time_log.txt
+./main.out < tests/01.t > tests/01ans.txt
+./main.out < tests/02.t > tests/02ans.txt
+./main.out < tests/03.t > tests/03ans.txt
+./main.out < tests/04.t > tests/04ans.txt
+diff tests/01ans.txt tests/01.txt
+diff tests/02ans.txt tests/02.txt
+diff tests/03ans.txt tests/03.txt
+diff tests/04ans.txt tests/04.txt
+cat time_log.txt
+Время выполнения: 2.57433
+Время выполнения: 3.32322
+Время выполнения: 3.31617
+Время выполнения: 2.95757
+igor@igor-Aspire-A315-53G:~/Рабочий стол/c++/DA/lab2$ 
+\end{alltt}
+
+Из приведенных тестов видно, что среднее время выполнения программы увеличивается в число от 2 до 5 раз на абсолютно случайном тесте, включающем сохранение и загрузку из файла.
+Учитывая то, что сбалансированное дерево должно производить вставку, удаление и поиск за логарифмическое время, такие плохие результаты, предположительно, могли получиться из-за сохранения и загрузки дерева в файл. Я провел еще один тест на подобии прошлого с 3000, 6000, 12000, 24000 командами без сохранения и загрузки в файл.
+
+\begin{alltt}
+igor@igor-Aspire-A315-53G:~/Рабочий стол/c++/DA/lab2$ make run
+python tests_creator.py
+rm -rf time_log.txt
+./main.out < tests/01.t > tests/01ans.txt
+./main.out < tests/02.t > tests/02ans.txt
+./main.out < tests/03.t > tests/03ans.txt
+./main.out < tests/04.t > tests/04ans.txt
+diff tests/01ans.txt tests/01.txt
+diff tests/02ans.txt tests/02.txt
+diff tests/03ans.txt tests/03.txt
+diff tests/04ans.txt tests/04.txt
+cat time_log.txt
+Время выполнения: 0.026785
+Время выполнения: 0.0354991
+Время выполнения: 0.0352533
+Время выполнения: 0.0272044
+igor@igor-Aspire-A315-53G:~/Рабочий стол/c++/DA/lab2$ make run
+python tests_creator.py
+rm -rf time_log.txt
+./main.out < tests/01.t > tests/01ans.txt
+./main.out < tests/02.t > tests/02ans.txt
+./main.out < tests/03.t > tests/03ans.txt
+./main.out < tests/04.t > tests/04ans.txt
+diff tests/01ans.txt tests/01.txt
+diff tests/02ans.txt tests/02.txt
+diff tests/03ans.txt tests/03.txt
+diff tests/04ans.txt tests/04.txt
+cat time_log.txt
+Время выполнения: 0.0491965
+Время выполнения: 0.0514075
+Время выполнения: 0.0689741
+Время выполнения: 0.0445583
+igor@igor-Aspire-A315-53G:~/Рабочий стол/c++/DA/lab2$ make run
+python tests_creator.py
+rm -rf time_log.txt
+./main.out < tests/01.t > tests/01ans.txt
+./main.out < tests/02.t > tests/02ans.txt
+./main.out < tests/03.t > tests/03ans.txt
+./main.out < tests/04.t > tests/04ans.txt
+diff tests/01ans.txt tests/01.txt
+diff tests/02ans.txt tests/02.txt
+diff tests/03ans.txt tests/03.txt
+diff tests/04ans.txt tests/04.txt
+cat time_log.txt
+Время выполнения: 0.19234
+Время выполнения: 0.0895575
+Время выполнения: 0.110492
+Время выполнения: 0.0846499
+igor@igor-Aspire-A315-53G:~/Рабочий стол/c++/DA/lab2$ make run
+python tests_creator.py
+rm -rf time_log.txt
+./main.out < tests/01.t > tests/01ans.txt
+./main.out < tests/02.t > tests/02ans.txt
+./main.out < tests/03.t > tests/03ans.txt
+./main.out < tests/04.t > tests/04ans.txt
+diff tests/01ans.txt tests/01.txt
+diff tests/02ans.txt tests/02.txt
+diff tests/03ans.txt tests/03.txt
+diff tests/04ans.txt tests/04.txt
+cat time_log.txt
+Время выполнения: 0.260127
+Время выполнения: 0.182638
+Время выполнения: 0.188566
+Время выполнения: 0.200639
+igor@igor-Aspire-A315-53G:~/Рабочий стол/c++/DA/lab2$
+\end{alltt}
+
+Как мы видим скорость работы существенно увеличилась, а отношения между средним выполнением колеблится от полтора до двух с половиной раза.
+
+\pagebreak

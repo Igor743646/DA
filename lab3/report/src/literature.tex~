@@ -1,0 +1,11 @@
+\begin{thebibliography}{99}
+\bibitem{google}
+{\itshape Поисковик - Google.} \\URL: \texttt{https://www.google.com/}
+\bibitem{algolist_sort}
+{\itshape AVL - деревья.} \\URL: \texttt{https://medium.com/@dimko1/структуры-данных-avl-дерево-7f8739e8faf9}
+\bibitem{cppreference}
+{\itshape Про операторы C++ и их переопределение} \\URL: \texttt{https://en.cppreference.com/w/cpp/language/operators}
+\bibitem{microsoftdocs}
+{\itshape Wikipedia про АВЛ - деревья} \\URL: \texttt{https://ru.wikipedia.org/wiki/АВЛ-дерево}
+\end{thebibliography}
+\pagebreak
