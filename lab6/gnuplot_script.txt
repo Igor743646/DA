@@ -1,0 +1,6 @@
+set xlabel "count of radix"
+set ylabel "time of operation"
+set terminal png
+set output "plots/plot.png"
+plot "< paste r.txt time_log.txt" using 1:2 with lines
+pause -1
