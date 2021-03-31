@@ -1,0 +1,155 @@
+\section{Описание}
+
+Суффиксное дерево - это особая структура данных, содержащая все суффиксы исходной строки, по которой это дерево было построено. Такое дерево позволяет искать подстроку в строке за
+линейное время, пропорциональное длине заданной подстроки.
+
+Свойства суффиксного дерева:
+\begin {itemize}
+  \item Количество листьев равняется количеству букв в исходной строке
+  \item У каждой внутренней вершины есть хотя бы два ребенка.
+  \item Каждое ребро помечено подстрокой из исходной строки
+  \item Никакие два ребра, выходящие из одной вершины, не имеют пометки, начинающиеся с одинакого символа
+  \item Дерево содержит все суффиксы исходной строки, причем все они заканчиваются в листе и больше нигде
+  \item При построении дерева созданный на каком-либо шаге лист всегда останется листом вплоть до окончания построения дерева.
+\end{itemize}
+
+Сначала, заметив, что у суффиксного дерева неизвестное число потомков, я решил, что данное дерево будет удобнее представлять в виде графа, поэтому вершины храняться в целостном массиве, где индекс в массиве является номером вершины. Такое представление помогло меньше думать об утечках памяти и представлять все суффиксные и обычные ссылки как номера типа long. 
+
+В дереве дополнительно описан класс итератора, с помощью которого оно будет строится. Сама структура хранит указатель на исходную строку, массив вершин, глобальную переменную end для построения дерева и количество вершин. 
+
+\begin{lstlisting}[language=c++]
+namespace Tree {
+
+    class SufTree {
+
+    public:
+
+        class Node {
+            public:
+                long l, r, index;
+                long suf_link = 0;
+                long str_index;
+                std::unordered_map<char, long> next_vertexes;
+
+                Node(const long _l = -1, const long _r = -1, const long _index = -1, 
+                const long _str_index = -1): l(_l), r(_r), index(_index), 
+                str_index(_str_index) {}
+
+                long Length(const long end) const {
+                    return std::min(r, end) - l;
+                }
+
+        };
+
+        class Iterator {
+            public:
+                Node* active_node;
+                long active_edge_index;
+                long active_length;
+                unsigned long remainder;
+                char active_edge_char;
+
+                Iterator(Node* _active_node, long _active_edge_index,
+                char _active_edge_char, long _active_length, long _remainder): 
+                active_node(_active_node), active_edge_index(_active_edge_index), 
+                active_length(_active_length), remainder(_remainder), 
+                active_edge_char(_active_edge_char) {}
+
+                void CreateEdge(const unsigned long node_count) {
+                    active_node->next_vertexes[active_edge_char] = node_count;
+                }
+
+                void FirstRule(const std::string* text) {
+                    active_edge_index++;
+                    if (active_edge_index < text->size())
+                        active_edge_char = (*text)[active_edge_index];
+                    active_length--;
+                }
+
+                void ThirdRule(const Node* vertexes) {
+                    active_node = (Node*) vertexes + active_node->suf_link;
+                }
+
+        };
+        
+        long end = 0;
+        const std::string* text;
+        Node* vertexes;
+        unsigned long node_count = 1;
+};
+\end{lstlisting}
+
+В main'е сначала считывается текст, на его основе строится суффиксное дерево. Далее в цикле while считываются паттерны, для которых надо найти вхождения. В метод суффиксного дерева Find я подаю указатель на вектор, чтобы его заполнили номерами позиций, с которых паттерн начинается. После этого массив сортируется, выводится ответ и очищаетя для следующего запроса. 
+
+\begin{lstlisting}[language=c++]
+int main() {
+
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(0);
+    std::cout.tie(0);
+
+    std::string text;
+    std::cin >> text;
+    text += '$';
+    std::vector<long> occurrences;
+    
+    Tree::SufTree st(&text);
+
+    /*--------------------------------------------*/
+
+    std::string pattern;
+    unsigned long pattern_index = 1;
+
+    while (std::cin >> pattern) {
+        st.Find(&pattern, &occurrences);
+
+        if (occurrences.size() == 0) {
+            pattern_index++;
+            continue;
+        }
+
+        std::stable_sort(occurrences.begin(), occurrences.end());
+
+        printf("%ld: ", pattern_index);
+        for (size_t j = 0; j < occurrences.size() - 1; ++j) {
+           printf("%ld, ", occurrences[j]);
+        }
+        
+        printf("%ld\n", occurrences.back());
+
+        pattern_index++;
+        occurrences.clear();
+    }
+
+    return 0;
+}
+\end{lstlisting}
+
+\begin{longtable}{|p{7.5cm}|p{7.5cm}|}
+\hline
+\rowcolor{lightgray}
+\multicolumn{2}{|c|} {main.cpp}\\
+\hline
+Tree::SufTree::Node::Node (...) & Конструктор класса Node\\
+\hline
+long Tree::SufTree::Node::Length (const long end) const  & Метод узла, возращающий длину ребра\\
+\hline
+Tree::SufTree::Iterator::Iterator (...)  & Конструктор класса итератор\\
+\hline
+void Tree::SufTree::Iterator::CreateEdge (const unsigned long node\_count) & Создает переход по таблице в вершину с номером node\_count\\
+\hline
+void Tree::SufTree::Iterator::FirstRule (const std::string* text)  & Первое правило для случая, когда активная вершина корневая\\
+\hline
+void Tree::SufTree::Iterator::ThirdRule (const Node* vertexes)  & Третье правило для случая, когда активная вершина не корневая\\
+\hline
+Tree::SufTree::SufTree(const std::string* t)  & Конструктор суффиксного дерева\\
+\hline
+void Tree::SufTree::FindIndexes(const Node* cur, std::vector<long>* r) const  & Заполняет вектор r всеми индексами листьев поддерева с корнем cur\\
+\hline
+bool Tree::SufTree::Find(const std::string* pattern, std::vector<long>* r) & Ищет все вхождения паттерна и заносит их в вектор r\\
+\hline
+Tree::SufTree::\texttildelow SufTree() & Деструктор\\
+\hline
+\end{longtable}
+
+\pagebreak

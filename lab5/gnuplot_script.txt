@@ -1,0 +1,4 @@
+set xlabel "count of radix"
+set ylabel "time of operation"
+plot "< sort -nk1 log.txt" using 1:2 with lines
+pause -1
