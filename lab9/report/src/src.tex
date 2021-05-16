@@ -1,0 +1,122 @@
+\section{Описание}
+
+Неориентированный граф - это совокупность двух множеств: множеств элементов-вершин графа и их парные связи - рёбра. Компонентой связности графа называется максимальный связный подграф данного графа, т.е. такой подграф, в котором из любой вершины существует путь к любой другой её вершине. Для нахождения компонент связности можно использовать простой поиск в глубину или ширину. 
+Для каждой вершины, в которой мы еще не побывали ни разу, запускаем обход в ширину, записываем, что вершины обхода принадлежат одной компоненте, заносим эти вершины в контейнер посещенных и продолжаем так, пока все вершины не будут обойдены. Таким образом мы поучим список компонент связности, представленных тоже списком, уже вершин. 
+
+\newpage
+
+\section{Исходный код}
+
+Класс Графа содержит хэш-таблицу, где ключом является номер вершины, а значением множество вершин, в которые есть путь из данной. Метод AddEdge добавляет ребро неориентированного графа. Метод Components возвращает список компонент связности.
+
+\begin{lstlisting}[language=c++]
+class Graph {
+
+	using vertex_type = size_t;
+
+	public:
+		unordered_map<vertex_type, set<vertex_type>> edges;
+
+	Graph() = default;
+	Graph(const size_t n) {
+		for (size_t i = 1; i <= n; i++) 
+			edges[i] = set<vertex_type>{i};
+	}
+
+	void AddEdge(const vertex_type& from, const vertex_type& to) {
+		edges[from].insert(to);
+		edges[to].insert(from);
+	}
+
+	vector<vector<vertex_type>> Components() {
+		vector<vector<vertex_type>> result;
+		map<vertex_type, vertex_type> visited;
+		vertex_type current;
+
+		for (const auto& vt : edges) {
+			if (visited.find(vt.first) == visited.end()) {
+
+				current = vt.first;
+				vector<vertex_type> p;
+				queue<vertex_type> queue;
+
+				queue.push(current);
+		
+				while (!queue.empty()) {
+					current = queue.front();
+					queue.pop();
+
+					if (visited.find(current) == visited.end()) {
+						visited.insert({current, current});
+						p.push_back(current);
+
+						for (const vertex_type& ver : edges[current]) {
+							queue.push(ver);
+						}
+					}
+				}
+
+				sort(p.begin(), p.end());
+				result.push_back(p);
+
+			}
+		}
+
+		sort(result.begin(), result.end(), 
+		[](const vector<vertex_type>& v1, const vector<vertex_type> v2) {
+			return v1 < v2;
+		});
+
+		return result;
+	}
+};
+\end{lstlisting}
+
+В main считывается количество вершин и ребер, затем создается граф из n-1 вершины и добавляются ребра. Затем ищем компоненты связности и печатаем на экран.
+
+\begin{lstlisting}[language=c++]
+int main() {
+
+	size_t n = 0, m = 0;
+	cin >> n >> m;
+
+	Graph gr(n);
+
+	for (size_t i = 0; i < m; i++) {
+		size_t from, to;
+		cin >> from >> to;
+		gr.AddEdge(from, to);
+	}
+
+	print(gr.Components());
+
+	return 0;
+}
+\end{lstlisting}
+
+\pagebreak
+
+\section{Консоль}
+\begin{alltt}
+igor@igor-Aspire-A315-53G:~/Рабочий стол/c++/DA/lab9$ ./main.out
+5 4
+1 2
+2 3
+1 3
+4 5
+1 2 3 
+4 5
+igor@igor-Aspire-A315-53G:~/Рабочий стол/c++/DA/lab9$ ./main.out
+5 4
+1 1
+1 1
+1 1
+1 1
+1 
+2 
+3 
+4 
+5 
+igor@igor-Aspire-A315-53G:~/Рабочий стол/c++/DA/lab9$
+\end{alltt}
+\pagebreak

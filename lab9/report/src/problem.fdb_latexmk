@@ -1,0 +1,11 @@
+# Fdb version 3
+["pdflatex"] 1615715185 "problem.tex" "problem.pdf" "problem" 1615715185
+  "/etc/texmf/web2c/texmf.cnf" 1599847393 475 c0e671620eb5563b2130f56340a5fde8 ""
+  "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1581979058 38841 ce3692aa899bb693b90b87eaa5d4d84e ""
+  "/usr/share/texmf/web2c/texmf.cnf" 1581979058 38841 ce3692aa899bb693b90b87eaa5d4d84e ""
+  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1599904641 8256716 033b2a4f49454b9940aa119e64f28d09 ""
+  "problem.aux" 1605258028 8 a94a2480d3289e625eea47cd1b285758 ""
+  "problem.tex" 1615715184 1975 b6c4af56d00a1f1d2d00ef5ab9c35b48 ""
+  (generated)
+  "problem.log"
+  "problem.pdf"

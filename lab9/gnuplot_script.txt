@@ -1,0 +1,7 @@
+set xlabel "number"
+set ylabel "time"
+set terminal png
+set output "plots/plot.png"
+
+plot "< paste tests/ans1.txt tests/ans1.txt tests/ans2.txt" using 1:(($2 + $4 + $6)/3) with lines, '' using 1:2 with lines, '' using 1:4 with lines, '' using 1:6 with lines
+pause -1
