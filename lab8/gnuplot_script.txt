@@ -1,0 +1,7 @@
+set xlabel "number"
+set ylabel "time"
+set terminal png
+set grid
+set output "plots/plot.png"
+plot "tests/ans.txt" using 1:2 with lines, 0.000000000031 * x**2
+pause -1
